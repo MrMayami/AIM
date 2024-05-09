@@ -118,7 +118,7 @@ jobs:
       run: pytest --collect-only
 
     - name: Build and Deploy
-      run: python aim_cli.py
+      run: python aim_cli.py :setup
 """
     with open(".github/workflows/ci-cd.yml", "w") as wf:
         wf.write(workflow_content)
