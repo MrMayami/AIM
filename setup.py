@@ -15,8 +15,8 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
-    name="aim-flask",  # Required
-    version="1.0.0",  # Required
+    name="aim_flask",  # Required
+    version="1.0.1",  # Required
     description="A CLI tool for setting up and managing AIM environments",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional
@@ -37,6 +37,11 @@ setup(
     keywords="AIM Flask",  # Optional
     packages=find_packages(),  # Required
     python_requires=">=3.7, <4",  # Required
+     entry_points={
+        'console_scripts': [
+            'aim=aim_flask:__main__',
+        ],
+    },
     install_requires=[],  # Optional
     project_urls={  # Optional
         "GitHub": "https://github.com/MrMayami/AIM",
