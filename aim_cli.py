@@ -179,6 +179,7 @@ def setup(verbose=False):
     create_project_structure(verbose=verbose)
     install_flask(verbose=verbose)
     install_pyyaml(verbose=verbose)
+    import yaml
     integrate_bootstrap(verbose=verbose)
     create_workflow_file(verbose=verbose)
     create_requirements_file(verbose=verbose)
