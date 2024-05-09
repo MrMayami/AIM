@@ -28,4 +28,4 @@ jobs:
       run: pytest --collect-only
 
     - name: Build and Deploy
-      run: python aim_cli.py :setup
+      run: python aim-flask.py :setup

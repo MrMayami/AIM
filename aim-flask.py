@@ -9,7 +9,7 @@ logging.basicConfig(filename='setup.log', level=logging.INFO, format='%(asctime)
 logger = logging.getLogger(__name__)
 
 # GitHub repository URL for feedback and logs
-GITHUB_REPO_URL = "https://github.com/yourusername/yourrepository.git"
+GITHUB_REPO_URL = "https://github.com/MrMayami/AIM.git"
 
 def log(message):
     print(message)
@@ -88,6 +88,7 @@ def install_pyyaml(verbose=False):
 
 def create_workflow_file(verbose=False):
     log("Creating workflow file...")
+    os.makedirs(".github/workflows", exist_ok=True)
     workflow_content = """
 name: CI/CD Pipeline
 
@@ -118,7 +119,7 @@ jobs:
       run: pytest --collect-only
 
     - name: Build and Deploy
-      run: python aim_cli.py :setup
+      run: python aim-flask.py :setup
 """
     with open(".github/workflows/ci-cd.yml", "w") as wf:
         wf.write(workflow_content)
