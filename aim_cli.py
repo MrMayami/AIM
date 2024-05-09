@@ -84,7 +84,7 @@ def install_pyyaml(verbose=False):
         log("PyYAML installed successfully.")
     except subprocess.CalledProcessError:
         log("Failed to install PyYAML.")
-        sys.exit(1)
+        exit(1)
 
 def create_workflow_file(verbose=False):
     log("Creating workflow file...")
@@ -110,7 +110,9 @@ jobs:
         python-version: 3.x
 
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: |
+        pip install -r requirements.txt
+        pip install pytest
 
     - name: Run tests
       run: pytest
