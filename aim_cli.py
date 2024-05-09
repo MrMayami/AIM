@@ -163,6 +163,13 @@ def create_requirements_file(verbose=False):
         log("Failed to install dependencies.")
         exit(1)
 
+def is_git_installed():
+    try:
+        subprocess.run(["git", "--version"], check=True)
+        return True
+    except FileNotFoundError:
+        return False
+    
 def setup_git(verbose=False):
     log("Setting up Git...")
     try:
@@ -185,7 +192,10 @@ def setup(verbose=False):
     integrate_bootstrap(verbose=verbose)
     create_workflow_file(verbose=verbose)
     create_requirements_file(verbose=verbose)
-    setup_git(verbose=verbose)
+    if not is_git_installed():
+        setup_git(verbose=verbose)
+    else:
+        log("Git is already installed.")
 
     log("Setup completed successfully.")
 
