@@ -4,8 +4,12 @@ import subprocess
 import platform
 import logging
 
+# aim_flask.py
+
+__version__ = "1.0.5"
+
 # Configure logging
-logging.basicConfig(filename='setup.log', level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
+logging.basicConfig(filename='../setup.log', level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
 # GitHub repository URL for feedback and logs
@@ -57,15 +61,15 @@ def create_project_structure(verbose=False):
     log("Project structure created successfully.")
 
     # Create __init__.py in app directory
-    with open("app/__init__.py", "w") as f:
+    with open("../app/__init__.py", "w") as f:
         f.write("# This file initializes the app package.")
 
     # Create routes.py in app directory
-    with open("app/routes.py", "w") as f:
+    with open("../app/routes.py", "w") as f:
         f.write("# This file defines the application routes.")
 
     # Create run.py in project root
-    with open("run.py", "w") as f:
+    with open("../run.py", "w") as f:
         f.write("# This file is used to run the application.")
 
 def install_flask(verbose=False):
@@ -121,7 +125,7 @@ jobs:
     - name: Build and Deploy
       run: python aim_flask.py :setup
 """
-    with open(".github/workflows/ci-cd.yml", "w") as wf:
+    with open("../.github/workflows/ci-cd.yml", "w") as wf:
         wf.write(workflow_content)
     log("Workflow file created successfully.")
 
@@ -151,7 +155,7 @@ def integrate_bootstrap(verbose=False):
 
 def create_requirements_file(verbose=False):
     log("Creating requirements.txt...")
-    with open("requirements.txt", "w") as f:
+    with open("../requirements.txt", "w") as f:
         f.write("# Installed dependencies\n")
         # Add other dependencies as needed
     log("requirements.txt created successfully.")
@@ -170,7 +174,11 @@ def is_git_installed():
         return True
     except FileNotFoundError:
         return False
-    
+
+def print_version():
+    # print(f"AIM Flask version {__version__}")
+    log(f"AIM Flask version {__version__}")
+
 def setup_git(verbose=False):
     log("Setting up Git...")
     try:
@@ -180,6 +188,28 @@ def setup_git(verbose=False):
     except subprocess.CalledProcessError:
         log("Failed to set up Git.")
         exit(1)
+
+def cli(verbose=False):                                          
+    with open("../pyproject.toml", "w") as f:
+        f.write(f"""
+    
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.poetry.scripts]
+aim = "aim_flask:print_version"
+
+[tool.poetry]
+name = "aim_flask"
+version = "{__version__}"
+description = "Front-end Development Framework for UI/UX designers and Front-end developers."
+authors = ["Joe Mayami <pr.mayami@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+    """)
 
 def setup(verbose=False):
     log("Welcome to the AIM setup CLI.")
@@ -202,7 +232,7 @@ def setup(verbose=False):
 
 def feedback(message):
     log("Saving feedback to file...")
-    with open("feedback.txt", "a") as f:
+    with open("../feedback.txt", "a") as f:
         f.write(message + "\n")
     log("Feedback saved successfully.")
 
@@ -218,16 +248,20 @@ def feedback(message):
 def print_help():
     log("Usage: aim <command>")
     log("Commands:")
+    log("  version    : Version AIM environment")
     log("  setup    : Setup AIM environment")
     log("  feedback : Send feedback")
     log("  help     : Display this help message")
+    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="AIM CLI for environment setup and installation")
-    parser.add_argument("command", choices=[":setup", ":feedback", ":help", ":verbose"], help="Command to execute")
+    parser.add_argument("command", choices=[":cli", ":version", ":setup", ":feedback", ":help", ":verbose"], help="Command to execute")
     args = parser.parse_args()
 
-    if args.command == ":setup":
+    if args.command == ":version":
+        print_version()
+    elif args.command == ":setup":
         setup(verbose=True)
     elif args.command == ":feedback":
         feedback_message = input("Enter your feedback message: ")
@@ -237,3 +271,6 @@ if __name__ == "__main__":
     elif args.command == ":verbose":
         print("Verbose mode enabled.")
         setup(verbose=True)
+    elif args.command == ":cli":
+        print("Verbose mode enabled.")
+        cli(verbose=True)
