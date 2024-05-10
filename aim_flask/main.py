@@ -6,7 +6,7 @@ import logging
 
 # aim_flask.py
 
-__version__ = "1.0.5"
+__version__ = "1.0.6"
 
 # Configure logging
 logging.basicConfig(filename='../setup.log', level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
@@ -129,7 +129,7 @@ jobs:
         wf.write(workflow_content)
     log("Workflow file created successfully.")
 
-def print_help():
+def run_help():
     help_text = """
     AIM CLI - Environment Setup and Installation
 
@@ -175,7 +175,7 @@ def is_git_installed():
     except FileNotFoundError:
         return False
 
-def print_version():
+def run_version():
     # print(f"AIM Flask version {__version__}")
     log(f"AIM Flask version {__version__}")
 
@@ -211,7 +211,7 @@ python = "^3.12"
 
     """)
 
-def setup(verbose=False):
+def run_setup(verbose=False):
     log("Welcome to the AIM setup CLI.")
 
     setup_python(verbose=verbose)
@@ -230,7 +230,7 @@ def setup(verbose=False):
 
     log("Setup completed successfully.")
 
-def feedback(message):
+def run_feedback(message):
     log("Saving feedback to file...")
     with open("../feedback.txt", "a") as f:
         f.write(message + "\n")
@@ -245,7 +245,7 @@ def feedback(message):
     except subprocess.CalledProcessError as e:
         log(f"Failed to push feedback to GitHub: {e}")
 
-def print_help():
+def run_help():
     log("Usage: aim <command>")
     log("Commands:")
     log("  version    : Version AIM environment")
@@ -260,17 +260,17 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.command == ":version":
-        print_version()
+        run_version()
     elif args.command == ":setup":
-        setup(verbose=True)
+        run_setup(verbose=True)
     elif args.command == ":feedback":
         feedback_message = input("Enter your feedback message: ")
-        feedback(feedback_message)
+        run_feedback(feedback_message)
     elif args.command == ":help":
-        print_help()
+        run_help()
     elif args.command == ":verbose":
         print("Verbose mode enabled.")
-        setup(verbose=True)
+        run_setup(verbose=True)
     elif args.command == ":cli":
         print("Verbose mode enabled.")
         cli(verbose=True)

@@ -4,11 +4,11 @@ requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.poetry.scripts]
-aim = "aim_flask:print_version"
+aim = "aim_flask:main"
 
 [tool.poetry]
 name = "aim_flask"
-version = "1.0.5"
+version = "1.0.6"
 description = "Front-end Development Framework for UI/UX designers and Front-end developers."
 authors = ["Joe Mayami <pr.mayami@gmail.com>"]
 
