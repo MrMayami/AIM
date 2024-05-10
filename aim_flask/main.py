@@ -8,8 +8,10 @@ import logging
 
 __version__ = "1.0.7"
 
+current_dir = os.getcwd()
+
 # Configure logging
-logging.basicConfig(filename='../setup.log', level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
+logging.basicConfig(filename=f'{current_dir}/setup.log', level=logging.INFO, format='%(asctime)s - %(levelname)s: %(message)s')
 logger = logging.getLogger(__name__)
 
 # GitHub repository URL for feedback and logs
@@ -61,15 +63,15 @@ def create_project_structure(verbose=False):
     log("Project structure created successfully.")
 
     # Create __init__.py in app directory
-    with open("/app/__init__.py", "w") as f:
+    with open(f"{current_dir}/app/__init__.py", "w") as f:
         f.write("# This file initializes the app package.")
 
     # Create routes.py in app directory
-    with open("/app/routes.py", "w") as f:
+    with open(f"{current_dir}/app/routes.py", "w") as f:
         f.write("# This file defines the application routes.")
 
     # Create run.py in project root
-    with open("/run.py", "w") as f:
+    with open(f"{current_dir}/run.py", "w") as f:
         f.write("# This file is used to run the application.")
 
 def install_flask(verbose=False):
@@ -125,7 +127,7 @@ jobs:
     - name: Build and Deploy
       run: python aim_flask.py :setup
 """
-    with open("/.github/workflows/ci-cd.yml", "w") as wf:
+    with open(f"{current_dir}/.github/workflows/ci-cd.yml", "w") as wf:
         wf.write(workflow_content)
     log("Workflow file created successfully.")
 
@@ -155,7 +157,7 @@ def integrate_bootstrap(verbose=False):
 
 def create_requirements_file(verbose=False):
     log("Creating requirements.txt...")
-    with open("/requirements.txt", "w") as f:
+    with open(f"{current_dir}/requirements.txt", "w") as f:
         f.write("# Installed dependencies\n")
         # Add other dependencies as needed
     log("requirements.txt created successfully.")
@@ -232,7 +234,7 @@ def run_setup(verbose=False):
 
 def run_feedback(message):
     log("Saving feedback to file...")
-    with open("/feedback.txt", "a") as f:
+    with open(f"{current_dir}/feedback.txt", "a") as f:
         f.write(message + "\n")
     log("Feedback saved successfully.")
 
