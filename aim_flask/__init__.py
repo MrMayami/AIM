@@ -1,12 +1,13 @@
 # __init__.py
 
-from .main import run_setup, run_feedback, run_help, run_version
+from .main import run_setup, run_feedback, run_help, run_version, run_preview
 import argparse
 import sys
+import interpreter
 
 def main():
     parser = argparse.ArgumentParser(description="AIM CLI for environment setup and installation")
-    parser.add_argument("command", choices=[":cli", ":version", ":setup", ":feedback", ":help", ":verbose"], help="Command to execute")
+    parser.add_argument("command", choices=[":cli", ":version", ":setup", ":feedback", ":help", ":verbose", ":preview"], help="Command to execute")
     args = parser.parse_args()
     args.command == sys.argv[1] if len(sys.argv) > 1 else None
 
@@ -22,10 +23,13 @@ def main():
     elif args.command == ":verbose":
         print("Verbose mode enabled.")
         run_setup(verbose=True)
+    elif args.command == ":preview":
+        print("Verbose mode enabled.")
+        run_preview(verbose=True)
     
 
 if __name__ == "__main__":
     main()
 
 # Make sure only necessary functions are exported
-__all__ = ["run_setup", "run_feedback", "run_help", "run_version", "main"]
+__all__ = ["run_setup", "run_feedback", "run_help", "run_version", "main", "run_preview", "interpreter"]

@@ -3,10 +3,11 @@ import os
 import subprocess
 import platform
 import logging
+from interpreter import interpret_aim_command
 
 # aim_flask.py
 
-__version__ = "1.0.7"
+__version__ = "1.0.8"
 
 current_dir = os.getcwd()
 
@@ -232,6 +233,16 @@ def run_setup(verbose=False):
 
     log("Setup completed successfully.")
 
+def run_preview(verbose=False):
+    # Read AIM commands from .aim file
+    with open(f'/app/com.aim', 'r') as file:
+        aim_commands = file.readlines()
+
+    # Interpret each AIM command and execute corresponding action
+    for aim_command in aim_commands:
+        result = interpret_aim_command(aim_command.strip())
+        print(result)
+
 def run_feedback(message):
     log("Saving feedback to file...")
     with open(f"{current_dir}/feedback.txt", "a") as f:
@@ -254,11 +265,12 @@ def run_help():
     log("  setup    : Setup AIM environment")
     log("  feedback : Send feedback")
     log("  help     : Display this help message")
+    log("  preview     : Display design in browser")
     
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="AIM CLI for environment setup and installation")
-    parser.add_argument("command", choices=[":cli", ":version", ":setup", ":feedback", ":help", ":verbose"], help="Command to execute")
+    parser = argparse.ArgumentParser(description="AIM CLI")
+    parser.add_argument("command", choices=[":cli", ":version", ":setup", ":feedback", ":help", ":verbose", ":preview"], help="Command to execute")
     args = parser.parse_args()
 
     if args.command == ":version":
@@ -276,3 +288,6 @@ if __name__ == "__main__":
     elif args.command == ":cli":
         print("Verbose mode enabled.")
         cli(verbose=True)
+    elif args.command == ":preview":
+        print("Verbose mode enabled.")
+        run_preview(verbose=True)
