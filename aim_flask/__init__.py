@@ -4,6 +4,7 @@ from .main import run_setup, run_feedback, run_help, run_version, run_preview
 import argparse
 import sys
 import aim_flask.Interpreter.interpreter as interpret_aim_command
+from .routes import interface
 
 def main():
     parser = argparse.ArgumentParser(description="AIM CLI for environment setup and installation")
@@ -32,4 +33,4 @@ if __name__ == "__main__":
     main()
 
 # Make sure only necessary functions are exported
-__all__ = ["run_setup", "run_feedback", "run_help", "run_version", "main", "run_preview", "interpret_aim_command"]
+__all__ = ["run_setup", "run_feedback", "run_help", "run_version", "main", "run_preview", "interpret_aim_command", "interface"]

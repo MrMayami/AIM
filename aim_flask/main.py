@@ -4,6 +4,7 @@ import subprocess
 import platform
 import logging
 from aim_flask.Interpreter.interpreter import interpret_aim_command
+from . import routes
 
 # aim_flask.py
 
@@ -250,7 +251,7 @@ def run_preview(verbose=False):
         # Interpret each AIM command and execute corresponding action
         for aim_command in aim_commands:
             result = interpret_aim_command(aim_command.strip())
-            print(result)
+            routes.interface(result)
     else:
         print("Directory 'com.aim' does not exist or is not a directory. PATH: ", directory_path)
 

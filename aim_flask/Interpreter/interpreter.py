@@ -8,7 +8,7 @@ def interpret_aim_command(aim_command):
     """
     parts = [part.strip() for part in aim_command.split(':') if part.strip()]
     action = parts[0]
-    print("Test Print: ", action)
+    print("AIM Command: ", parts[0], parts[1])
     if action == 'create':
         if len(parts) < 3:
             return "Invalid create action: Insufficient arguments"
