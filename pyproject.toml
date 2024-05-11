@@ -8,7 +8,7 @@ aim = "aim_flask:main"
 
 [tool.poetry]
 name = "aim_flask"
-version = "1.0.8"
+version = "1.0.9"
 description = "Front-end Development Framework for UI/UX designers and Front-end developers."
 authors = ["Joe Mayami <pr.mayami@gmail.com>"]
 

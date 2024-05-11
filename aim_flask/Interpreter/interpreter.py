@@ -6,23 +6,22 @@ def interpret_aim_command(aim_command):
     """
     Interpret AIM command and execute corresponding action.
     """
-    parts = aim_command.split(':')
-    action = parts[0].strip()
+    parts = [part.strip() for part in aim_command.split(':') if part.strip()]
+    action = parts[0]
+    print("Test Print: ", action)
     if action == 'create':
-        return create_action(parts[1:])
+        if len(parts) < 3:
+            return "Invalid create action: Insufficient arguments"
+        element_type = parts[1].strip()
+        properties = json.loads(':'.join(parts[2:]).strip())
+        return create_action(element_type, properties)
     else:
         return f"Unknown action: {action}"
 
-def create_action(args):
+def create_action(element_type, properties):
     """
     Execute create action based on provided arguments.
     """
-    # Parse arguments
-    if len(args) < 2:
-        return "Invalid create action: Insufficient arguments"
-    element_type = args[0].strip()
-    properties = json.loads(args[1].strip())
-
     # Generate HTML/CSS code based on element type and properties
     if element_type == 'text':
         return generate_text_element(properties)

@@ -3,11 +3,11 @@ import os
 import subprocess
 import platform
 import logging
-from interpreter import interpret_aim_command
+from aim_flask.Interpreter.interpreter import interpret_aim_command
 
 # aim_flask.py
 
-__version__ = "1.0.8"
+__version__ = "1.0.9"
 
 current_dir = os.getcwd()
 
@@ -235,13 +235,24 @@ def run_setup(verbose=False):
 
 def run_preview(verbose=False):
     # Read AIM commands from .aim file
-    with open(f'/app/com.aim', 'r') as file:
-        aim_commands = file.readlines()
+    # Specify the directory name
+    directory_name = "com.aim"
 
-    # Interpret each AIM command and execute corresponding action
-    for aim_command in aim_commands:
-        result = interpret_aim_command(aim_command.strip())
-        print(result)
+    # Construct the full path
+    directory_path = os.path.join(f"{current_dir}\\app", directory_name)
+
+    # Check if the directory exists
+    if os.path.exists(f"{current_dir}\\app") and os.path.exists(directory_path):
+        log(f"Directory path for 'com.aim': {directory_path}")
+        with open(directory_path, 'r') as file:
+            aim_commands = file.readlines()
+
+        # Interpret each AIM command and execute corresponding action
+        for aim_command in aim_commands:
+            result = interpret_aim_command(aim_command.strip())
+            print(result)
+    else:
+        print("Directory 'com.aim' does not exist or is not a directory. PATH: ", directory_path)
 
 def run_feedback(message):
     log("Saving feedback to file...")
@@ -291,3 +302,6 @@ if __name__ == "__main__":
     elif args.command == ":preview":
         print("Verbose mode enabled.")
         run_preview(verbose=True)
+
+# Make sure only necessary functions are exported
+__all__ = ["interpret_aim_command"]
