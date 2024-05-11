@@ -3,12 +3,13 @@ import os
 import subprocess
 import platform
 import logging
+from flask import Flask, render_template
 from aim_flask.Interpreter.interpreter import interpret_aim_command
-from . import routes
+import requests
 
-# aim_flask.py
+app = Flask(__name__)
 
-__version__ = "1.0.9"
+__version__ = "1.0.10"
 
 current_dir = os.getcwd()
 
@@ -234,7 +235,8 @@ def run_setup(verbose=False):
 
     log("Setup completed successfully.")
 
-def run_preview(verbose=False):
+@app.route('/')
+def run_preview():
     # Read AIM commands from .aim file
     # Specify the directory name
     directory_name = "com.aim"
@@ -251,9 +253,10 @@ def run_preview(verbose=False):
         # Interpret each AIM command and execute corresponding action
         for aim_command in aim_commands:
             result = interpret_aim_command(aim_command.strip())
-            routes.interface(result)
+            print('Visit host url to preview design')
     else:
         print("Directory 'com.aim' does not exist or is not a directory. PATH: ", directory_path)
+    return render_template('index.html', ref=result)
 
 def run_feedback(message):
     log("Saving feedback to file...")
@@ -279,8 +282,8 @@ def run_help():
     log("  help     : Display this help message")
     log("  preview     : Display design in browser")
     
-
 if __name__ == "__main__":
+    
     parser = argparse.ArgumentParser(description="AIM CLI")
     parser.add_argument("command", choices=[":cli", ":version", ":setup", ":feedback", ":help", ":verbose", ":preview"], help="Command to execute")
     args = parser.parse_args()
@@ -302,7 +305,11 @@ if __name__ == "__main__":
         cli(verbose=True)
     elif args.command == ":preview":
         print("Verbose mode enabled.")
-        run_preview(verbose=True)
+        print('Running preview...')
+        response = requests.get('http://127.0.0.1:5000')
+        if response.status_code == 200:
+            print('Preview successful. Visit http://127.0.0.1:5000 visit server url to preview design.')
+        else:
+            print('Error: Failed to preview.')
 
-# Make sure only necessary functions are exported
-__all__ = ["interpret_aim_command"]
+app.run(debug=True, host='127.0.0.1', port=5000, use_reloader=False)
